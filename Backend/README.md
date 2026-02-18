@@ -113,6 +113,71 @@ Postman
 - In the Body tab choose `raw` + `JSON` and paste the request JSON above.
 - Send and inspect the JSON response.
 
+## Endpoint: POST /login
+
+- URL: `/login` (mounted in `user.routes.js`)
+- Method: `POST`
+- Content-Type: `application/json`
+
+### Validation rules
+- `email`: must be a valid email (`body('email').isEmail()`).
+- `password`: minimum length 6 (`body('password').isLength({min:6})`).
+
+### Expected request body
+
+```json
+{
+  "email": "john.doe@example.com",
+  "password": "secret123"
+}
+```
+
+Notes:
+- Both `email` and `password` are required.
+
+### Success response (200)
+
+JSON body:
+
+```json
+{
+  "token": "<jwt-token>",
+  "user": {
+    "_id": "605c...",
+    "fullname": { "firstname": "John", "lastname": "Doe" },
+    "email": "john.doe@example.com",
+    "socketId": null
+  }
+}
+```
+
+The `token` is a JWT produced by `user.generateAuthToken()` (signed with `process.env.JWT_SECRET`).
+
+### Validation error (400)
+
+When input validation fails, the endpoint returns status `400` and a JSON payload with `errors` array (from `express-validator`). Example:
+
+```json
+{
+  "errors": [
+    { "msg": "Invalid Email", "param": "email", "location": "body" },
+    { "msg": "Password must be atleast 6 digit long", "param": "password", "location": "body" }
+  ]
+}
+```
+
+### Authentication error (401)
+
+If the credentials are incorrect (email not found or password mismatch), the API responds with `401` and a message such as:
+
+```json
+{ "error": "Invalid email or password" }
+```
+
+### Server error (500)
+
+On unexpected errors the endpoint returns a `500` with an error message.
+
 ## Notes for implementers
 - Passwords are hashed using `userModel.hashPassword(password)` (bcrypt with salt rounds 10).
 - After creating the user the controller returns a JWT token and the created user object.
