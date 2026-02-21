@@ -1,6 +1,8 @@
-# Backend API — User Endpoints
+# Backend API — User & Captain Endpoints
 
-This document describes the `/register` endpoint for user registration.
+This document provides a comprehensive reference for all user and captain related
+HTTP endpoints implemented in this backend. It includes registration, login,
+profile retrieval and logout operations for both user and captain roles.
 
 ## Overview
 - Base folder: this file documents the backend in this folder.
@@ -178,17 +180,214 @@ If the credentials are incorrect (email not found or password mismatch), the API
 
 On unexpected errors the endpoint returns a `500` with an error message.
 
-## Notes for implementers
-- Passwords are hashed using `userModel.hashPassword(password)` (bcrypt with salt rounds 10).
-- After creating the user the controller returns a JWT token and the created user object.
-- Ensure `JWT_SECRET` is set in environment variables for token generation.
-- The route's validation is defined in `routes/user.routes.js` and creation logic lives in `services/user.service.js`.
+## Additional User Endpoints
 
-Files of interest:
-- [user.Controller.js](controllers/user.Controller.js)
-- [user.routes.js](routes/user.routes.js)
-- [user.model.js](models/user.model.js)
-- [user.service.js](services/user.service.js)
+### GET /profile
+
+- URL: `/profile` (mounted in `user.routes.js`)
+- Method: `GET`
+- Authentication: requires a valid JWT (sent as `Bearer <token>` in the
+  `Authorization` header or stored in the `token` cookie).
+- Success response (200):
+
+```json
+{
+  "_id": "605c...",
+  "fullname": { "firstname": "John", "lastname": "Doe" },
+  "email": "john.doe@example.com",
+  "socketId": null
+}
+```
+
+### GET /logout
+
+- URL: `/logout`
+- Method: `GET`
+- Auth: same requirements as `/profile`.
+- Behavior: token is added to the blacklist collection and the cookie is
+  cleared.
+- Success response (200):
+
+```json
+{ "message": "Logged out successfully" }
+```
+
+Examples:
+
+```
+curl http://localhost:3000/profile -H "Authorization: Bearer <jwt-token>"
+curl http://localhost:3000/logout -H "Authorization: Bearer <jwt-token>"
+```
 
 ---
-Generated documentation for the `POST /register` endpoint.
+
+## Captain Endpoints
+
+All captain routes are defined in `routes/captain.routes.js` and mirror the
+user API with additional vehicle-related fields.
+
+### POST /register
+
+- URL: `/register` (when the captain router is mounted, e.g. `/captains`).
+- Method: `POST`
+- Content-Type: `application/json`
+
+#### Validation rules
+
+- `email` – must be a valid email.
+- `fullname.firstname` – minimum length 3.
+- `password` – minimum length 6.
+- `vehicle.color` – minimum length 3.
+- `vehicle.plate` – minimum length 3.
+- `vehicle.capacity` – must be an integer ≥ 1.
+- `vehicle.vehicleType` – must be one of `car`, `motorcycle`, `auto`.
+
+#### Expected request body
+
+```json
+{
+  "fullname": { "firstname": "Jane", "lastname": "Smith" },
+  "email": "jane.smith@example.com",
+  "password": "secret123",
+  "vehicle": {
+    "color": "blue",
+    "plate": "XYZ123",
+    "capacity": 4,
+    "vehicleType": "car"
+  }
+}
+```
+
+#### Success response (201)
+
+```json
+{
+  "token": "<jwt-token>",
+  "captain": {
+    "_id": "605c...",
+    "fullname": { "firstname": "Jane", "lastname": "Smith" },
+    "email": "jane.smith@example.com",
+    "socketId": null,
+    "status": "inactive",
+    "vehicle": {
+      "color": "blue",
+      "plate": "XYZ123",
+      "capacity": 4,
+      "vehicleType": "car",
+      "location": { "lat": null, "lng": null }
+    }
+  }
+}
+```
+
+#### Validation error (400)
+
+Similar to user registration, the response includes an `errors` array.
+
+#### Server / creation error (500)
+
+If creation fails or required fields are missing in `captain.service.createCaptain`.
+
+### POST /login
+
+- URL: `/login`
+- Method: `POST`
+- Content-Type: `application/json`
+
+#### Validation rules
+
+- `email`: valid email.
+- `password`: minimum length 6.
+
+#### Request body
+
+```json
+{
+  "email": "jane.smith@example.com",
+  "password": "secret123"
+}
+```
+
+#### Success response (200)
+
+```json
+{
+  "token": "<jwt-token>",
+  "captain": { ...same shape as registration response... }
+}
+```
+
+#### Authentication error (401)
+
+Incorrect credentials return `401` with
+
+```json
+{ "error": "Invalid email or password" }
+```
+
+### GET /profile
+
+- URL: `/profile`
+- Auth: `authCaptain` middleware.
+- Returns the authenticated captain:
+
+```json
+{ "captain": { ... } }
+```
+
+### GET /logout
+
+- URL: `/logout`
+- Auth: same as profile.
+- Blacklists token and clears cookie; responds with
+
+```json
+{ "message": "Logged out successfully" }
+```
+
+### Examples
+
+(curl, fetch, axios examples similar to user; update URLs accordingly)
+
+```bash
+curl -X POST http://localhost:3000/captains/register \
+  -H "Content-Type: application/json" \
+  -d '{...}'
+
+curl -X POST http://localhost:3000/captains/login \
+  -H "Content-Type: application/json" \
+  -d '{...}'
+
+curl http://localhost:3000/captains/profile \
+  -H "Authorization: Bearer <jwt-token>"
+
+curl http://localhost:3000/captains/logout \
+  -H "Authorization: Bearer <jwt-token>"
+```
+
+---
+
+## Notes for implementers
+
+- Passwords for both users and captains are hashed with `hashPassword` defined
+  on the respective mongoose models (bcrypt, salt rounds 10).
+- Tokens are JWTs signed with `process.env.JWT_SECRET` and expire after 24 h
+  (captains) or 1 d (users).
+- Blacklisted tokens are stored in `models/blacklistToken.model.js` and expire
+  after 1 day via the TTL index.
+- Authentication middleware (`auth.middleware.js`) checks for a token in a
+  cookie or authorization header and ensures it is not blacklisted.
+- Validation rules are defined in the route files (`routes/*.routes.js`).
+- Creation logic resides in `services/*.service.js`.
+
+Files of interest:
+
+- `controllers/user.Controller.js`
+- `controllers/captain.controller.js`
+- `routes/user.routes.js`
+- `routes/captain.routes.js`
+- `models/user.model.js`
+- `models/captain.model.js`
+- `services/user.service.js`
+- `services/captain.service.js`
+
