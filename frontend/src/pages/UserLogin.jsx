@@ -30,14 +30,14 @@ const UserLogin = () => {
         submitHandler(e)
      }}>
         <h3 className='text-lg font-medium mb-2'>What's your eamil</h3>
-        <input required 
+        <input required
         value={email}
         onChange={(e)=>{
             setEmail(e.target.value)
         }}
-        className='bg-[#eeeee] mb-7 rounded px-4 py-2 border w-full text-lg placeholder::text-base ' type="email" placeholder='email@example.com'/>
+        className='bg-[#eeeeee] mb-7 rounded px-4 py-2 border w-full text-lg placeholder::text-base ' type="email" placeholder='email@example.com'/>
         <h3  className='text-lg font-medium mb-2'>Enter Password</h3>
-        <input required className='bg-[#eeeee] mb-7 rounded px-4 py-2 border w-full text-lg placeholder::text-base ' 
+        <input required className='bg-[#eeeeee] mb-7 rounded px-4 py-2 border w-full text-lg placeholder::text-base ' 
         value={password}
         onChange={(e)=>{
             setPassword(e.target.value)
