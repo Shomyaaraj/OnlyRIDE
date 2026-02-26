@@ -29,7 +29,7 @@ const UserLogin = () => {
      <form onSubmit={(e)=>{
         submitHandler(e)
      }}>
-        <h3 className='text-lg font-medium mb-2'>What's your eamil</h3>
+        <h3 className='text-lg font-medium mb-2'>What's your e-mail</h3>
         <input required
         value={email}
         onChange={(e)=>{

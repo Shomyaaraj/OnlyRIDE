@@ -14,7 +14,7 @@ const submitHandler = (e) => {
   e.preventDefault()
 
   const data = {
-    username: {
+    fullname: {
       firstName,
       lastName
     },
@@ -24,7 +24,7 @@ const submitHandler = (e) => {
 
   setUserData(data)
 
-  console.log(data)  // ✅ correct output
+ 
 
   setEmail('')
   setPassword('')
@@ -57,7 +57,7 @@ const submitHandler = (e) => {
         }}/>
      </div>
 
-        <h3 className='text-lg font-medium mb-2'>What's your eamil</h3>
+        <h3 className='text-lg font-medium mb-2'>What's your e-mail</h3>
         <input required 
          value={email}
         onChange={(e)=>{
@@ -80,7 +80,7 @@ const submitHandler = (e) => {
         </div>
         <div>
           <p className='text-[10px] leading-tight'>
-  By proceeding, you agree to Uber’s Terms of Use and confirm that you have read the Privacy Policy. You consent to receive communications regarding your rides and account.
+  This site is protected by reCAPTCHA and <span className='underline'>Goggle Ploicy</span> and <span className='underline'> Terms of Service</span> apply.
 </p>
         </div>
     </div>
