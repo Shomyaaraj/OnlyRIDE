@@ -59,14 +59,14 @@ const submitHandler = async(e) => {
      <h3 className='text-lg font-medium mb-2'>What's your name</h3>
      <div className='flex gap-4 mb-6' >
       <input required 
-        className='bg-[#eeeeee] w-1/2 rounded px-4 py-2 border text-lg placeholder::text-base ' type="text" placeholder='First name'
+        className='bg-[#eeeeee] w-1/2 rounded px-4 py-2 border text-lg placeholder:text-base' type="text" placeholder='First name'
         value={firstName}
         onChange={(e)=>{
             setFirstName(e.target.value)
         }}
         />
         <input required 
-        className='bg-[#eeeeee] w-1/2 rounded px-4 py-2 border text-lg placeholder::text-base ' type="text" placeholder='Last name'
+        className='bg-[#eeeeee] w-1/2 rounded px-4 py-2 border text-lg placeholder:text-base' type="text" placeholder='Last name'
         value={lastName}
         onChange={(e)=>{
           setLastName(e.target.value)
@@ -80,16 +80,16 @@ const submitHandler = async(e) => {
           setEmail(e.target.value)
         }}
        
-        className='bg-[#eeeeee] mb-6 rounded px-4 py-2 border w-full text-lg placeholder::text-base ' type="email" placeholder='email@example.com'/>
+        className='bg-[#eeeeee] mb-6 rounded px-4 py-2 border w-full text-lg placeholder:text-base' type="email" placeholder='email@example.com'/>
         <h3  className='text-lg font-medium mb-2'>Enter Password</h3>
-        <input required className='bg-[#eeeeee] mb-5 rounded px-4 py-2 border w-full text-lg placeholder::text-base ' 
+        <input required className='bg-[#eeeeee] mb-5 rounded px-4 py-2 border w-full text-lg placeholder:text-base' 
          value={password}
         onChange={(e)=>{
           setPassword(e.target.value)
         }}
         
         type="password" placeholder='password'/>
-        <button className='bg-[#111] text-white font-semibold mb-3 rounded px-4 py-2 w-full text-lg placeholder::text-base  '>Create Account</button>
+        <button className='bg-[#111] text-white font-semibold mb-3 rounded px-4 py-2 w-full text-lg placeholder:text-base '>Create Account</button>
 
        <p className='text-center'> Already have an Account?  <Link to='/login' className='text-blue-600' >Login here</Link></p>
      </form>
