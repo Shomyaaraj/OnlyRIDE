@@ -74,7 +74,7 @@ const Home = () => {
 
 </div>
       </div>
-      <div className='fixed w-full z-10 bg-white bottom-0 p-3 px-3 py-6'>
+      <div className='fixed w-full z-10 translate-y-full bg-white bottom-0 px-3 py-8'>
         <h3 className='text-2xl font-semibold mb-5'>Choose a Vehicle</h3>
 
          <div className='flex border-2 border-gray-200 hover:border-black mb-2 rounded-xl w-full p-3 items-center justify-between'>
