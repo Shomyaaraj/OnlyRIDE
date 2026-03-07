@@ -1,14 +1,23 @@
 import React from 'react'
 
-const ConfirmRide = (props) => {
+const WaitingForDriver = (props) => {
   return (
-    <div>
+ <div>
       <h5 className='p-1 text-center w-[93%] absolute top-0' onClick={()=>{
-            props.setVehiclePanel(false)
+            props.WaitingForDriver(false)
        }} ><i className="text-3xl text-gray-200 ri-arrow-down-wide-fill"></i></h5>
-         <h3 className='text-2xl font-semibold mb-5'>Confirm your Ride</h3>
+
+       <div className='flex items-center justify-between'>
+         <img className='h-10' src="https://imgs.search.brave.com/wtpH-N99a8_OkMZ2p-swZAHAYVRzIqz00GPla9gMrYk/rs:fit:860:0:0:0/g:ce/aHR0cHM6Ly9zdGF0/aWMudmVjdGVlenku/Y29tL3N5c3RlbS9y/ZXNvdXJjZXMvdGh1/bWJuYWlscy8wMjkv/OTE0LzczMy9zbWFs/bC93aGl0ZS1jaXR5/LWNhci1pc29sYXRl/ZC1vbi10cmFuc3Bh/cmVudC1iYWNrZ3Jv/dW5kLTNkLXJlbmRl/cmluZy1pbGx1c3Ry/YXRpb24tZnJlZS1w/bmcucG5n" />
+         <div className='text-right'>
+          <h2 className='text-lg font-medium'>Shomya </h2>
+          <h4 className='text-xl font-semibold -mt-1 -mb-1'>BR01 AB 7488 </h4>
+          <p className='text-sm text-gray-600'>Maurti suzuki Alto</p>
+         </div>
+       </div>
+       
         <div className='flex gap-2 justify-between flex-col items-center'>
-            <img className='h-20' src="https://imgs.search.brave.com/wtpH-N99a8_OkMZ2p-swZAHAYVRzIqz00GPla9gMrYk/rs:fit:860:0:0:0/g:ce/aHR0cHM6Ly9zdGF0/aWMudmVjdGVlenku/Y29tL3N5c3RlbS9y/ZXNvdXJjZXMvdGh1/bWJuYWlscy8wMjkv/OTE0LzczMy9zbWFs/bC93aGl0ZS1jaXR5/LWNhci1pc29sYXRl/ZC1vbi10cmFuc3Bh/cmVudC1iYWNrZ3Jv/dW5kLTNkLXJlbmRl/cmluZy1pbGx1c3Ry/YXRpb24tZnJlZS1w/bmcucG5n" />
+           
             <div className='w-full mt-5'>
                 <div className='flex items-center gap-5 p-3 border-b-2 border-gray-200'>
                   <i className="ri-user-location-fill"></i>
@@ -33,13 +42,10 @@ const ConfirmRide = (props) => {
                 </div>
             </div>
             
-                <button onClick={()=>{
-                  props.setVehicleFound(true)
-                  props.setConfirmRidePanel(false)
-                }} className='w-full bg-green-600 text-white font-semibold p-2 rounded-lg mt-5'>Confirm Ride</button>
+             
         </div>
     </div>
   )
 }
 
-export default ConfirmRide
+export default WaitingForDriver

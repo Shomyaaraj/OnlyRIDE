@@ -5,6 +5,8 @@ import 'remixicon/fonts/remixicon.css'
 import LocationSearchPanel from '../components/LocationSearchPanel'
 import ConfirmRide from '../components/ConfirmRide'
 import VehiclePanel from '../components/VehiclePanel'
+import LookingForDriver from '../components/LookingForDriver'
+import WaitingForDriver from '../components/WaitingForDriver'
 
 const Home = () => {
   const [pickup, setPickup] = useState('')
@@ -14,8 +16,13 @@ const Home = () => {
   const confirmRidePanelRef = useRef(null)
   const panelRef = useRef(null)
   const panelCloseRef = useRef(null)
+  const vehicleFoundRef = useRef(null)
+  const waitingForDriverRef=useRef(null)
+
   const [vehiclePanel, setVehiclePanel] = useState(false)
  const [confirmRidePanel, setConfirmRidePanel] = useState(false)
+ const [vehicleFound, setVehicleFound] = useState(false)
+ const[waitingForDriver, setWaitingForDriver] =useState(false)
 
   const submitHandler=(e)=>{
     e.preventDefault()
@@ -56,12 +63,37 @@ const Home = () => {
     }
   },[vehiclePanel])
 
+  useGSAP(function(){
+  if(vehicleFound){
+    gsap.to(vehicleFoundRef.current, {
+      transform:'translateY(0%)'
+    })
+  } else {
+    gsap.to(vehicleFoundRef.current, {
+      transform:'translateY(100%)'
+    })
+  }
+},[vehicleFound])
+
+ useGSAP(function(){
+  if(waitingForDriver){
+    gsap.to(waitingForDriverRef.current, {
+      transform:'translateY(0%)'
+    })
+  } else {
+    gsap.to(waitingForDriverRef.current, {
+      transform:'translateY(100%)'
+    })
+  }
+},[waitingForDriver])
+
 
   return (
     <div className='h-screen relative overflow-hidden'>
       <img className='w-16 absolute left-5 top-5' src="https://icon2.cleanpng.com/20180514/vuw/kisspng-uber-eats-delivery-take-out-logo-5afa521a2f9e72.6198463315263544581951.jpg" alt="" />
 
       <div  className='h-screen w-screen'>
+        {/*img for temp */}
         <img className='h-full w-full object-cover' src="https://imgs.search.brave.com/rLmwmpHGPBq1Uz2r6MUIJiLDFYQ5pN5-9MuPqU69ZSQ/rs:fit:860:0:0:0/g:ce/aHR0cHM6Ly9pbWcu/ZnJlZXBpay5jb20v/cHJlbWl1bS12ZWN0/b3IvdGF4aS1zZXJ2/aWNlLXB1YmxpYy10/cmFuc3BvcnQtYXBw/LXRlY2hub2xvZ3lf/MjQ5MDgtMjgyODUu/anBnP3NlbXQ9YWlz/X2h5YnJpZA" alt="" />
       </div>
       <div className='flex flex-col justify-end h-screen absolute top-0  w-full'>
@@ -110,8 +142,15 @@ const Home = () => {
        <VehiclePanel setConfirmRidePanel={setConfirmRidePanel} setVehiclePanel={setVehiclePanel}/>
       </div>
         <div ref={confirmRidePanelRef} className='fixed w-full z-10 translate-y-full bg-white bottom-0 px-3 py-6 pt-12' >
-      <ConfirmRide/>
+      <ConfirmRide setConfirmRidePanel={setConfirmRidePanel} setVehicleFound={setVehicleFound}/>
       </div>
+       <div  ref={vehicleFoundRef} className='fixed w-full z-10 translate-y-full bg-white bottom-0 px-3 py-6 pt-12
+       '> <LookingForDriver setVehicleFound={setVehicleFound}/>
+      </div>
+      <div ref={waitingForDriverRef} className='fixed w-full z-10 bg-white bottom-0 px-3 py-6 pt-12
+       '> <WaitingForDriver waitingForDriver={waitingForDriver} />
+      </div>
+      
     </div>
   )
 }
