@@ -1,8 +1,8 @@
 import React from 'react'
 
-const RidePopUp = (props) => {
+const ConfirmRidePopUp = (props) => {
   return (
-    <div>
+     <div>
       <h5 className='p-1 text-center w-[93%] absolute top-0' onClick={()=>{props.setRidePopupPanel(false)
            
        }} ><i className="text-3xl text-gray-200 ri-arrow-down-wide-fill"></i></h5>
@@ -38,16 +38,11 @@ const RidePopUp = (props) => {
                   </div>
                 </div>
             </div>
-          
-                <button
-  onClick={() => {
-    props.setConfirmRidePopupPanel(true)
-    props.setRidePopupPanel(false)
-  }}
-  className='w-full bg-green-600 text-white font-semibold p-2 rounded-lg mt-5'
->
-  Accept Ride
-</button>
+            
+                <button onClick={()=>{
+                  props.setVehicleFound(true)
+                  props.setConfirmRidePanel(false)
+                }} className='w-full bg-green-600 text-white font-semibold p-2 rounded-lg mt-5'>Confirm Ride</button>
 
                 <button onClick={()=>{
                  props.setRidePopupPanel(false)
@@ -57,4 +52,4 @@ const RidePopUp = (props) => {
   )
 }
 
-export default RidePopUp
+export default ConfirmRidePopUp
