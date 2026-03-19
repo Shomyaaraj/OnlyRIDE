@@ -151,18 +151,7 @@ Create a `.env` file in the Backend root directory:
 PORT=3000
 NODE_ENV=development
 
-# Database
-MONGODB_URI=mongodb://localhost:27017/uber_clone
-# OR for MongoDB Atlas:
-# MONGODB_URI=mongodb+srv://username:password@cluster.mongodb.net/uber_clone
 
-# JWT Configuration
-JWT_SECRET=your_super_secret_jwt_key_change_this_in_production
-JWT_EXPIRE=24h
-
-# Optional: Socket.IO for real-time features
-SOCKET_PORT=3001
-```
 
 ### Step 4: Start MongoDB
 
