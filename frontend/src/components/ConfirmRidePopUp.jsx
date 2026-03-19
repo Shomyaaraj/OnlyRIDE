@@ -40,13 +40,14 @@ const ConfirmRidePopUp = (props) => {
             </div>
             
                 <button onClick={()=>{
-                  props.setVehicleFound(true)
-                  props.setConfirmRidePanel(false)
-                }} className='w-full bg-green-600 text-white font-semibold p-2 rounded-lg mt-5'>Confirm Ride</button>
+                
+                
+                }} className='w-full bg-green-600 text-white font-semibold p-2 rounded-lg mt-5'>Confirm</button>
 
                 <button onClick={()=>{
-                 props.setRidePopupPanel(false)
-                }} className='w-full bg-gray-300 text-gray-700 font-semibold p-2 rounded-lg mt-1'>Ignore</button>
+                props.setConfirmRidePopupPanel(false)
+                props.setRidePopupPanel(false)
+                }} className='w-full bg-red-500 text-white font-semibold p-2 rounded-lg mt-1'>Cancel</button>
         </div>
     </div>
   )
